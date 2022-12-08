@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import dayjs from 'dayjs';
 import { Box, Heading, Input, Switch, Text } from 'native-base';
 
 import DatePicker from '../DatePicker';
@@ -36,6 +37,8 @@ const MachineCard = (
     const attr = attributes[titleAttr];
     if (attr.type === "checkbox") {
       return `${data[attr.name] ? "Not " : ""}${attr.name}`;
+    } else if (attr.type === "date") {
+      return data[attr.name] ? dayjs(data[attr.name]).format("MM/DD/YYYY") : "No Title";
     }
     
     return data[attr.name] ? data[attr.name] : "No Title";

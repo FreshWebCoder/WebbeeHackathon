@@ -87,8 +87,8 @@ const CategoryCard = (
         let titleAttr = prevVal.titleAttr;
         if (idx === prevVal.titleAttr) {
           titleAttr = 0;
-        } else if (prevVal.titleAttr === prevVal.attributes.length - 1) {
-          titleAttr = prevVal.attributes.length - 2;
+        } else if (idx < prevVal.titleAttr) {
+          titleAttr -= 1;
         }
   
         return {
