@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import dayjs from 'dayjs';
 import { Input, Pressable } from 'native-base';
@@ -29,12 +30,14 @@ const DatePicker = (
   return (
     <>
       <Pressable style={{ width: "100%" }} onPress={onPress}>
-        <Input
-          variant="outline"
-          placeholder={placeholder}
-          value={value ? dayjs(value).format("MM/DD/YYYY") : ""}
-          isReadOnly
-        />
+        <View pointerEvents="none">
+          <Input
+            variant="outline"
+            placeholder={placeholder}
+            value={value ? dayjs(value).format("MM/DD/YYYY") : ""}
+            isReadOnly
+          />
+        </View>
       </Pressable>
 
       {isOpened && (

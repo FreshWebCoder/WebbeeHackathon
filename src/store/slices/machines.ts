@@ -8,6 +8,7 @@ const persistConfig = {
 };
 
 export interface IAttribute {
+  id: number;
   name: string;
   type: "date" | "text" | "checkbox" | "number";
 }
@@ -42,12 +43,14 @@ const machinesSlice = createSlice({
           data.machines = data.machines.map((machine) => {
             const newMachine = {} as { [key: string]: any; };
 
-            data.attributes.forEach((attr, idx) => {
-              if (attr.type !== el.attributes[idx]?.type) {
-                // set a new value when type is changed
+            data.attributes.forEach((attr) => {
+              const oldAttr = el.attributes.find((a) => a.id === attr.id);
+
+              if (!oldAttr || attr.type !== oldAttr.type) {
+                // set new values if new attribute or type is changed
                 newMachine[attr.name] = attr.type === "checkbox" ? false : "";
               } else {
-                newMachine[attr.name] = machine[el.attributes[idx].name];
+                newMachine[attr.name] = machine[oldAttr.name];
               }
             })
 

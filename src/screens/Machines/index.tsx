@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Text } from 'native-base';
 
@@ -14,15 +14,17 @@ const DashboardScreen = ({ route }: any) => {
   const machine = useSelector(getMachineById(id));
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {machine ? (
-        <CategoryDetail data={machine} />
-      ) : (
-        <Text style={styles.noItemText}>
-          No data to display
-        </Text>
-      )}
-    </ScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {machine ? (
+          <CategoryDetail data={machine} />
+        ) : (
+          <Text style={styles.noItemText}>
+            No data to display
+          </Text>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 };
 

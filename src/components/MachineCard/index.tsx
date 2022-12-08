@@ -34,7 +34,10 @@ const MachineCard = (
   };
 
   const renderTitle = () => {
-    const attr = attributes[titleAttr];
+    const attr = attributes.find((el) => el.id === titleAttr);
+
+    if (!attr) return "No Title";
+
     if (attr.type === "checkbox") {
       return `${data[attr.name] ? "Not " : ""}${attr.name}`;
     } else if (attr.type === "date") {
@@ -54,8 +57,8 @@ const MachineCard = (
         <DeleteButton onPress={onDelete} />
       </View>
 
-      {attributes.map((el, idx) => (
-        <View key={idx} style={styles.attrRow}>
+      {attributes.map((el) => (
+        <View key={el.id} style={styles.attrRow}>
           {el.type === "checkbox" ? (
             <>
               <Text>{el.name}</Text>

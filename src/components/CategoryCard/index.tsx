@@ -48,6 +48,7 @@ const CategoryCard = (
         attributes: [
           ...detail.attributes,
           {
+            id: detail.attributes[detail.attributes.length - 1].id + 1,
             name: "",
             type: "text"
           }
@@ -56,19 +57,19 @@ const CategoryCard = (
     }
   };
 
-  const onUpdateAttr = (idx: number, field: "titleAttr" | "name" | "type", value: any) => {
+  const onUpdateAttr = (id: number, field: "titleAttr" | "name" | "type", value: any) => {
     if (field === "titleAttr") {
       if (value) {
         setDetail((prevVal) => prevVal ? {
           ...prevVal,
-          titleAttr: idx,
+          titleAttr: id,
         } : prevVal)
       }
     } else {
       setDetail((prevVal) => prevVal ? ({
         ...prevVal,
-        attributes: prevVal.attributes.map((el, i) => {
-          if (i === idx) {
+        attributes: prevVal.attributes.map((el) => {
+          if (el.id === id) {
             return {
               ...el,
               [field]: value
@@ -81,20 +82,13 @@ const CategoryCard = (
     }
   };
 
-  const onRemoveAttr = (idx: number) => {
+  const onRemoveAttr = (id: number) => {
     setDetail((prevVal) => {
       if (prevVal) {
-        let titleAttr = prevVal.titleAttr;
-        if (idx === prevVal.titleAttr) {
-          titleAttr = 0;
-        } else if (idx < prevVal.titleAttr) {
-          titleAttr -= 1;
-        }
-  
         return {
           ...prevVal,
-          titleAttr,
-          attributes: prevVal.attributes.filter((_, i) => idx !== i),
+          titleAttr: id === prevVal.titleAttr ? prevVal.attributes[0].id : prevVal.titleAttr,
+          attributes: prevVal.attributes.filter((el) => el.id !== id),
         }
       }
 
@@ -147,14 +141,14 @@ const CategoryCard = (
         onChangeText={onTitleChange}
       />
 
-      {detail.attributes.map((el, idx) => (
-        <View key={idx} style={styles.attrRow}>
+      {detail.attributes.map((el) => (
+        <View key={el.id} style={styles.attrRow}>
           <Checkbox
-            value={idx.toString()}
+            value={el.id.toString()}
             accessibilityLabel="checkbox"
-            isChecked={detail.titleAttr === idx}
+            isChecked={detail.titleAttr === el.id}
             isDisabled={detail.attributes.length === 1}
-            onChange={(val) => onUpdateAttr(idx, "titleAttr", val)}
+            onChange={(val) => onUpdateAttr(el.id, "titleAttr", val)}
           />
 
           <Input
@@ -162,7 +156,7 @@ const CategoryCard = (
             flex={1}
             mx={4}
             variant="outline"
-            onChangeText={(val) => onUpdateAttr(idx, "name", val)}
+            onChangeText={(val) => onUpdateAttr(el.id, "name", val)}
           />
 
           <Menu
@@ -172,18 +166,18 @@ const CategoryCard = (
               </Button>
             )}
           >
-            {attributeTypes.map((el) => (
+            {attributeTypes.map((type) => (
               <Menu.Item
-                key={el}
-                onPress={() => onUpdateAttr(idx, "type", el)}
+                key={type}
+                onPress={() => onUpdateAttr(el.id, "type", type)}
               >
-                {el.toUpperCase()}
+                {type.toUpperCase()}
               </Menu.Item>
             ))}
           </Menu>
 
           {detail.attributes.length > 1 && (
-            <DeleteButton onPress={() => onRemoveAttr(idx)} />
+            <DeleteButton onPress={() => onRemoveAttr(el.id)} />
           )}
         </View>
       ))}

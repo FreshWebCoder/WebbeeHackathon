@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import { Button, Flex } from 'native-base';
 
 import { CategoryCard, ResponsiveView } from '../../components';
@@ -29,10 +29,11 @@ const ManageCategoriesScreen = () => {
       id: getLastId() + 1,
       title: "",
       attributes: [{
+        id: 1,
         name: "",
         type: "text"
       }],
-      titleAttr: 0,
+      titleAttr: 1,
       machines: [],
       isNew: true,
     });
@@ -59,37 +60,39 @@ const ManageCategoriesScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Flex direction="row" wrap="wrap">
-        {machineTypes.map((el) => (
-          <ResponsiveView key={el.id}>
-            <CategoryCard
-              data={el}
-              onSubmit={onItemSubmit}
-              onDelete={onItemDelete}
-            />
-          </ResponsiveView>
-        ))}
-        {pendingItem && (
-          <ResponsiveView>
-            <CategoryCard
-              data={pendingItem}
-              onSubmit={onItemSubmit}
-              onDelete={onItemDelete}
-            />
-          </ResponsiveView>
-        )}
-      </Flex>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Flex direction="row" wrap="wrap">
+          {machineTypes.map((el) => (
+            <ResponsiveView key={el.id}>
+              <CategoryCard
+                data={el}
+                onSubmit={onItemSubmit}
+                onDelete={onItemDelete}
+              />
+            </ResponsiveView>
+          ))}
+          {pendingItem && (
+            <ResponsiveView>
+              <CategoryCard
+                data={pendingItem}
+                onSubmit={onItemSubmit}
+                onDelete={onItemDelete}
+              />
+            </ResponsiveView>
+          )}
+        </Flex>
 
-      {!pendingItem && (
-        <Button
-          style={styles.btnNew}
-          onPress={onPressNew}
-        >
-          Add New Category
-        </Button>
-      )}
-    </ScrollView>
+        {!pendingItem && (
+          <Button
+            style={styles.btnNew}
+            onPress={onPressNew}
+          >
+            Add New Category
+          </Button>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   )
 };
 
